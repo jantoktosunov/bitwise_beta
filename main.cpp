@@ -6,7 +6,7 @@ using namespace cv;
 
 int main(int argc, char** argv )
 {
-    Mat src, src_gray;
+    Mat src, src_gray;//1
     Mat src2;
     Mat grad;
     char* window_name = "Sobel Demo - Simple Edge Detector";
