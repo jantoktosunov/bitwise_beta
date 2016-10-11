@@ -4,7 +4,7 @@
 
 using namespace cv;
 
-int main(int argc, char** argv )
+int main(int argc)
 {
     Mat src, src_gray;//1
     Mat src2;
@@ -18,49 +18,29 @@ int main(int argc, char** argv )
     int c;
 
     /// Load an image
-    src = imread( argv[1] );
-    src2 = imread(argv[2]);
+    src = imread( "/home/tokjan/ClionProjects/bitwise_beta/lena.jpg"); // - 0 Серый, ниже 0 безизменений либо такие флаги CV_LOAD_IMAGE_UNCHANGED, CV_LOAD_IMAGE_GRAYSCALE, CV_LOAD_IMAGE_COLOR
+    src2 = imread("/home/tokjan/ClionProjects/bitwise_beta/2.jpg"); // тоже самое
 
 
+    Mat res;
     if( !src.data )
     { return -1; }
 
-    GaussianBlur( src, src, Size(3,3), 0, 0, BORDER_DEFAULT );
-    /// Convert it to gray
-    cvtColor( src, src_gray, CV_BGR2GRAY );
+    imshow("src",src);
+    imshow("src2",src2);
 
 
-    /// Create window
-    namedWindow( window_name, CV_WINDOW_AUTOSIZE );
 
-    /// Generate grad_x and grad_y
-    Mat grad_x, grad_y;
-    Mat abs_grad_x, abs_grad_y;
-
-    /// Gradient X
-    //Scharr( src_gray, grad_x, ddepth, 1, 0, scale, delta, BORDER_DEFAULT );
-    Sobel( src_gray, grad_x, ddepth, 1, 0, 3, scale, delta, BORDER_DEFAULT );
-    convertScaleAbs( grad_x, abs_grad_x );
-
-    /// Gradient Y
-    //Scharr( src_gray, grad_y, ddepth, 0, 1, scale, delta, BORDER_DEFAULT );
-    Sobel( src_gray, grad_y, ddepth, 0, 1, 3, scale, delta, BORDER_DEFAULT );
-    convertScaleAbs( grad_y, abs_grad_y );
-
-    /// Total Gradient (approximate)
-    addWeighted( abs_grad_x, 0.5, abs_grad_y, 0.5, 0, grad );
-    Mat res;
-    imshow( window_name, grad );
-    bitwise_or(src,src,res,grad);
-    //bitwise_or(src,src,res,src2); не могу применить методы bitwise между рисунками 2.jpg и lena.jpg
-    imshow("OR",res);
-    bitwise_and(src,src,res,grad);
+    bitwise_and(src(cv::Rect(0,0,src2.cols, src2.rows)),src2,res);
     imshow("AND",res);
-    bitwise_xor(src,src,res,grad);
+
+    bitwise_xor(src(cv::Rect(0,0,src2.cols, src2.rows)),src2,res);
     imshow("XOR",res);
+
+    bitwise_or(src(cv::Rect(0,0,src2.cols, src2.rows)),src2,res);
+    imshow("OR",res);
 
 
 
     waitKey(0);
-
 }
