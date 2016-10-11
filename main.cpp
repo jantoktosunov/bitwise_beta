@@ -40,7 +40,7 @@ int main(int argc)
     bitwise_or(src(cv::Rect(0,0,src2.cols, src2.rows)),src2,res);
     imshow("OR",res);
 
-
+    //End
 
     waitKey(0);
 }
